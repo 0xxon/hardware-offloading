@@ -1,0 +1,139 @@
+{
+	"doc": "Table configurations for countReport",
+	"tables" : {
+		"flow_tbl" : {
+			"default_rule" : {
+				"name" : "default",
+				"action" : {
+					"type" : "fwd_act",
+					"data" : {
+						"port" : { "value" : "p1"},
+						"idx" : { "value" : "32'0x0"},
+						"src_v6" : { "value" : "128'0x0" },
+						"src_v4" : { "value" : "32'0x0" },
+						"srcPrefixLen" : { "value" : "8'0x0" },
+						"dst_v6" : { "value" : "128'0x0" },
+						"dst_v4" : { "value" : "32'0x0" },
+						"dstPrefixLen" : { "value" : "8'0x0" },
+						"srcPort" : { "value" : "16'0x0" },
+						"dstPort" : { "value" : "16'0x0" },
+						"tcp" : { "value" : "0x1" },
+						"udp" : { "value" : "0x1" }
+					}
+				}
+			},
+			"rules" : [
+				{
+					"name" : "http_server",
+					"action" : {
+						"type" : "fwd_act",
+						"data" : {
+							"port" : { "value" : "p1"},
+							"idx" : { "value" : "32'0x1"},
+							"src_v6" : { "value" : "128'0x0" },
+							"src_v4" : { "value" : "32'0x0" },
+							"srcPrefixLen" : { "value" : "8'0x0" },
+							"dst_v6" : { "value" : "128'0x0" },
+							"dst_v4" : { "value" : "32'0x0" },
+							"dstPrefixLen" : { "value" : "8'0x0" },
+							"srcPort" : { "value" : "16'80" },
+							"dstPort" : { "value" : "16'0x0" },
+							"tcp" : { "value" : "0x1" },
+							"udp" : { "value" : "0x1" }
+						}
+					},
+					"match" : {
+						"tcp" : { "value" : "valid" },
+						"tcp.srcPort" : { "value" : "80" }
+					}
+				},
+				{
+					"name" : "http_client",
+					"action" : {
+						"type" : "fwd_act",
+						"data" : {
+							"port" : { "value" : "p1"},
+							"idx" : { "value" : "32'0x2"},
+							"src_v6" : { "value" : "128'0x0" },
+							"src_v4" : { "value" : "32'0x0" },
+							"srcPrefixLen" : { "value" : "8'0x0" },
+							"dst_v6" : { "value" : "128'0x0" },
+							"dst_v4" : { "value" : "32'0x0" },
+							"dstPrefixLen" : { "value" : "8'0x0" },
+							"srcPort" : { "value" : "16'0x0" },
+							"dstPort" : { "value" : "16'80" },
+							"tcp" : { "value" : "0x1" },
+							"udp" : { "value" : "0x1" }
+						}
+					},
+					"match" : {
+						"tcp" : { "value" : "valid"},
+						"tcp.dstPort" : { "value" : "80" }
+					}
+
+				},
+				{
+					"name" : "https_server",
+					"action" : {
+						"type" : "fwd_act",
+						"data" : {
+							"port" : { "value" : "p1"},
+							"idx" : { "value" : "32'0x3"},
+							"src_v6" : { "value" : "128'0x0" },
+							"src_v4" : { "value" : "32'0x0" },
+							"srcPrefixLen" : { "value" : "8'0x0" },
+							"dst_v6" : { "value" : "128'0x0" },
+							"dst_v4" : { "value" : "32'0x0" },
+							"dstPrefixLen" : { "value" : "8'0x0" },
+							"srcPort" : { "value" : "16'443" },
+							"dstPort" : { "value" : "16'0x0" },
+							"tcp" : { "value" : "0x1" },
+							"udp" : { "value" : "0x1" }
+						}
+					},
+					"match" : {
+						"tcp" : { "value" : "valid" },
+						"tcp.srcPort" : { "value" : "443" }
+					}
+				},
+				{
+					"name" : "https_client",
+					"action" : {
+						"type" : "fwd_act",
+						"data" : {
+							"port" : { "value" : "p1"},
+							"idx" : { "value" : "32'0x4"},
+							"src_v6" : { "value" : "128'0x0" },
+							"src_v4" : { "value" : "32'0x0" },
+							"srcPrefixLen" : { "value" : "8'0x0" },
+							"dst_v6" : { "value" : "128'0x0" },
+							"dst_v4" : { "value" : "32'0x0" },
+							"dstPrefixLen" : { "value" : "8'0x0" },
+							"srcPort" : { "value" : "16'0x0" },
+							"dstPort" : { "value" : "16'443" },
+							"tcp" : { "value" : "0x1" },
+							"udp" : { "value" : "0x1" }
+						}
+					},
+					"match" : {
+						"tcp" : { "value" : "valid"},
+						"tcp.dstPort" : { "value" : "443" }
+					}
+
+				}
+			]
+		}
+	},
+	"registers": {
+		"configs" : [
+			{
+				"name": "th_fl_count_cfg",
+				"register": "th_fl_count",
+				"index": 0,
+				"count": 1,
+				"value": "0x00000005"
+			}
+		]
+	}
+}
+

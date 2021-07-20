@@ -1,0 +1,80 @@
+{
+	"doc": "Table configurations for countReport",
+	"tables" : {
+		"flow_ip6_tcp_tbl" : {
+			"default_rule" : {
+				"name" : "default"
+			},
+			"rules" : []
+		},
+		"flow_ip6_udp_tbl" : {
+			"default_rule" : {
+				"name" : "default"
+			},
+			"rules" : []
+		},
+		"flow_ip4_tcp_tbl" : {
+			"default_rule" : {
+				"name" : "default"
+			},
+			"rules" : [
+				{
+					"name" : "http_server",
+					"match" : {
+						"ipv4.src" : { "value" : "0.0.0.0", "mask": "0" },
+						"ipv4.dst" : { "value" : "0.0.0.0", "mask": "0" },
+						"tcp.srcPort" : { "value" : "80", "mask": "0xffff" },
+						"tcp.dstPort" : { "value" : "0", "mask": "0" }
+					}
+				},
+				{
+					"name" : "http_client",
+					"match" : {
+						"ipv4.src" : { "value" : "0.0.0.0", "mask": "0" },
+						"ipv4.dst" : { "value" : "0.0.0.0", "mask": "0" },
+						"tcp.srcPort" : { "value" : "0", "mask": "0" },
+						"tcp.dstPort" : { "value" : "80", "mask": "0xffff" }
+					}
+
+				},
+				{
+					"name" : "https_server",
+					"match" : {
+						"ipv4.src" : { "value" : "0.0.0.0", "mask": "0" },
+						"ipv4.dst" : { "value" : "0.0.0.0", "mask": "0" },
+						"tcp.srcPort" : { "value" : "443", "mask": "0xffff" },
+						"tcp.dstPort" : { "value" : "0", "mask": "0" }
+					}
+				},
+				{
+					"name" : "https_client",
+					"match" : {
+						"ipv4.src" : { "value" : "0.0.0.0", "mask": "0" },
+						"ipv4.dst" : { "value" : "0.0.0.0", "mask": "0" },
+						"tcp.srcPort" : { "value" : "0", "mask": "0" },
+						"tcp.dstPort" : { "value" : "443", "mask": "0xffff" }
+					}
+
+				}
+			]
+		},
+		"flow_ip4_udp_tbl" : {
+			"default_rule" : {
+				"name" : "default"
+			},
+			"rules" : []
+		}
+	},
+	"registers": {
+		"configs" : [
+			{
+				"name": "th_fl_count_cfg",
+				"register": "th_fl_count",
+				"index": 0,
+				"count": 1,
+				"value": "0x00000004"
+			}
+		]
+	}
+}
+
