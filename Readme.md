@@ -74,6 +74,7 @@ patch -p1 < dpdk-dpaa.patch
 
 After applying the patch, compile the custom dpdk:
 
+```
 $ make config T=arm64-dpaa2-linuxapp-gcc
 $ make T=arm64-dpaa2-linuxapp-gcc
 ```
@@ -226,4 +227,4 @@ The following projects are in separate directories:
 
 The next project is more complex, complete and involve a C sandbox and a controller running on the host
 
-* `countReport` is the main project; it contains statistic advertisements for the traffic observed, syn offloading and splitting on the virtual interfaces
+* `countReport` is the main project; it contains statistic advertisements for the traffic observed, syn offloading and splitting on the virtual interfaces. To compile the controller you need to put the `sdk6_rte.thrift` file from the Netronome sdk into the `p4/countReport/controller` directory.
