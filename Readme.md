@@ -8,7 +8,9 @@ The relevant DPDK version that was used when writing this is 17.11; the document
 
 ## Compiling the applications
 
-The source-code for our prototype to offload non-established connections is contained in the directory `sia/offload`.
+The source-code for our prototype to offload non-established connections is contained in the directory `sia/offload`. The source-code for our prototype for protocol detection is contained in the directory `sia/proto-matching`.
+
+Both projects need some setup before they can be compiled:
 
 ### Setting up the SIA Development Environment from scratch
 
@@ -114,7 +116,7 @@ $ ar -M < librte.mri
 
 And there you have it: a single librte.a, including our custom DPAA2 PMD.
 
-## NIC Memory Config
+### NIC Memory Config
 
 To get the apps to run, we need to increase the number of hugepages available
 on the NIC:
@@ -149,6 +151,27 @@ Run the app as follows:
 
 ```
 $ sudo DPRC=dprc.2 ./bin/arm64/sia-lx2160/prototype -c 0xffff --master-lcore 0 -n 1
+```
+
+or simply by using the included `run.sh` script:
+
+```
+$ ./run.sh
+```
+
+### Compiling the proto-matching application
+
+On the NIC, compile the app using make:
+
+```
+$ cd sia/proto-matching
+$ bldmake clean all
+```
+
+Run the app as follows:
+
+```
+$ sudo DPRC=dprc.2 ./bin/arm64/sia-lx2160/prototype -c 0xffff --master-lcore 0 -n 1 --log-level=8 --log-level=".*,6" --log-level=prototype,6 --log-level=prototype.stats,8
 ```
 
 or simply by using the included `run.sh` script:
