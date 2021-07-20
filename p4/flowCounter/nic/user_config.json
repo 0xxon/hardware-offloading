@@ -1,0 +1,69 @@
+{
+	"tables" : {
+		"flow_ip4_tcp_tbl" : {
+			"default_rule" : {
+				"name" : "default",
+				"action" : {
+					"type" : "fwd_act",
+					"data" : {
+						"port" : { "value" : "p1"},
+						"idx" : { "value" : "0"}
+					}
+				}
+			},
+			"rules" : [
+				{
+					"name" : "https_client",
+					"match" : {
+						"ipv4.src" : { "value" : "0", "mask": "0" },
+						"ipv4.dst" : { "value" : "0", "mask": "0" },
+						"tcp.sport" : { "value" : "0", "mask": "0" },
+						"tcp.dport" : { "value" : "443", "mask": "0xffff" }
+					},
+					"action" : {
+						"type" : "fwd_act",
+						"data" : {
+							"port" : { "value" : "p1"},
+							"idx" : { "value" : "2"}
+						}
+					}
+
+				},
+				{
+					"name" : "http_server",
+					"match" : {
+						"ipv4.src" : { "value" : "0", "mask": "0" },
+						"ipv4.dst" : { "value" : "0", "mask": "0" },
+						"tcp.sport" : { "value" : "80", "mask": "0xffff" },
+						"tcp.dport" : { "value" : "0", "mask": "0" }
+					},
+					"action" : {
+						"type" : "fwd_act",
+						"data" : {
+							"port" : { "value" : "p1"},
+							"idx" : { "value" : "3"}
+						}
+					}
+				},
+				{
+					"name" : "http_client",
+					"match" : {
+						"ipv4.src" : { "value" : "0", "mask": "0" },
+						"ipv4.dst" : { "value" : "0", "mask": "0" },
+						"tcp.sport" : { "value" : "0", "mask": "0" },
+						"tcp.dport" : { "value" : "80", "mask": "0xffff" }
+					},
+					"action" : {
+						"type" : "fwd_act",
+						"data" : {
+							"port" : { "value" : "p1"},
+							"idx" : { "value" : "4"}
+						}
+					}
+
+				}
+			]
+		}
+	}
+}
+

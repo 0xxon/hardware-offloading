@@ -1,0 +1,17 @@
+{
+	"doc": "Table configurations for l3minifwd",
+	"tables" : {
+		"fwd_tbl" : {
+			"default_rule" : {
+				"name" : "default",
+				"action" : {
+					"type" : "fwd_act",
+					"data" : {
+						"port" : { "value" : "v0.2" }
+					}
+				}
+			},
+			"rules" : []
+		}
+	}
+}

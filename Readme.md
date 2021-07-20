@@ -2,11 +2,15 @@ This repository contains prototype applications for offloading certain operation
 
 For a reference of the goals of this project, see the [following paper](https://www.icir.org/johanna/papers/sdnfvsec17codesign.pdf).
 
-The software in this repository is based on DPDK and was specifically developed to be used in a Myricom SIA card.
+There are two separate implementations in this project, which are written for different hardware platforms.
+
+The first, contained in the `sia` subdirectory is based on DPDK and was specifically developed to be used in a Myricom SIA card.
 
 The relevant DPDK version that was used when writing this is 17.11; the documentation is available here: https://doc.dpdk.org/guides-17.11/.
 
-## Compiling the applications
+The second, contained in the `p4` subdirectory is based on Netronome Agilio SmartNICs.
+
+## Compiling the SIA applications
 
 The source-code for our prototype to offload non-established connections is contained in the directory `sia/offload`. The source-code for our prototype for protocol detection is contained in the directory `sia/proto-matching`.
 
@@ -179,3 +183,47 @@ or simply by using the included `run.sh` script:
 ```
 $ ./run.sh
 ```
+
+
+## Compiling the Netronome applications
+
+The Netronome applications assume a specific file architecture:
+
+* The SDK folder has to be located at `/opt/netromome/`. This can be changed in the `nic/Makefile` file of each application.
+
+For each of the applications, you typically follow the similar steps for execution; there are slight differences for Pure P4 projects and hybrid projects (which contain additional low-level code).
+
+### Compiling pure P4 projects
+
+Execute the following commands:
+
+```
+$ make start_server      # start the RTE server
+$ make                   # compile the P4 code
+$ make design-reload     # Loads the firmware on the NIC
+$ make config-reload     # Loads the config file user_config.json
+```
+
+### Compiling hybrid projects
+
+Execute the following commands:
+
+```
+$ make start_server      # start the RTE server
+$ make                   # compile the P4 and C sandbox code
+$ make full-install      # Load the firmware on the NIC (3.5 min), start the controller
+$ make install           # Equivalent to make full-install without loading the firmware
+$ make stop              # Kill the controller process
+```
+
+### Projects
+
+The following projects are in separate directories:
+
+* `l2minifwd` is a simple P4 program just forwarding frames from one interface to another
+* `pktCounter` adds a packet counter to the previous program
+* `flowCounter` counts flows for a given set of rules
+
+The next project is more complex, complete and involve a C sandbox and a controller running on the host
+
+* `countReport` is the main project; it contains statistic advertisements for the traffic observed, syn offloading and splitting on the virtual interfaces
