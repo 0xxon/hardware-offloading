@@ -1,0 +1,42 @@
+diff --git a/drivers/net/dpaa2/dpaa2_ethdev.c b/drivers/net/dpaa2/dpaa2_ethdev.c
+index cb454b7..749bd24 100644
+--- a/drivers/net/dpaa2/dpaa2_ethdev.c
++++ b/drivers/net/dpaa2/dpaa2_ethdev.c
+@@ -364,7 +364,10 @@ dpaa2_eth_dev_configure(struct rte_eth_dev *dev)
+ 	struct dpaa2_dev_priv *priv = dev->data->dev_private;
+ 	struct fsl_mc_io *dpni = priv->hw;
+ 	struct rte_eth_conf *eth_conf = &dev->data->dev_conf;
++	uint64_t tx_offloads = eth_conf->txmode.offloads;
+ 	int rx_ip_csum_offload = false;
++	int tx_l3_csum_offload = false;
++	int tx_l4_csum_offload = false;
+ 	int ret;
+ 
+ 	PMD_INIT_FUNC_TRACE();
+@@ -410,15 +413,23 @@ dpaa2_eth_dev_configure(struct rte_eth_dev *dev)
+ 		return ret;
+ 	}
+ 
++	if (tx_offloads & DEV_TX_OFFLOAD_IPV4_CKSUM)
++		tx_l3_csum_offload = true;
++
++	if ((tx_offloads & DEV_TX_OFFLOAD_UDP_CKSUM) ||
++			   (tx_offloads & DEV_TX_OFFLOAD_TCP_CKSUM) ||
++			   (tx_offloads & DEV_TX_OFFLOAD_SCTP_CKSUM))
++		tx_l4_csum_offload = true;
++
+ 	ret = dpni_set_offload(dpni, CMD_PRI_LOW, priv->token,
+-			       DPNI_OFF_TX_L3_CSUM, true);
++			       DPNI_OFF_TX_L3_CSUM, tx_l3_csum_offload);
+ 	if (ret) {
+ 		DPAA2_PMD_ERR("Error to set TX l3 csum:Error = %d", ret);
+ 		return ret;
+ 	}
+ 
+ 	ret = dpni_set_offload(dpni, CMD_PRI_LOW, priv->token,
+-			       DPNI_OFF_TX_L4_CSUM, true);
++			       DPNI_OFF_TX_L4_CSUM, tx_l4_csum_offload);
+ 	if (ret) {
+ 		DPAA2_PMD_ERR("Error to get TX l4 csum:Error = %d", ret);
+ 		return ret;
+
