@@ -228,3 +228,11 @@ The following projects are in separate directories:
 The next project is more complex, complete and involve a C sandbox and a controller running on the host
 
 * `countReport` is the main project; it contains statistic advertisements for the traffic observed, syn offloading and splitting on the virtual interfaces. To compile the controller you need to put the `sdk6_rte.thrift` file from the Netronome sdk into the `p4/countReport/controller` directory.
+
+## Acknowledgements
+
+This work was supported by the US National Science Foundation under grant [OAC-1642161](https://nsf.gov/awardsearch/showAward?AWD_ID=1642161&HistoricalAwards=false).
+Any opinions, findings, and conclusions or recommendations
+expressed in this material are those of the authors or origina-
+tors, and do not necessarily reflect the views of the National
+Science Foundation.
